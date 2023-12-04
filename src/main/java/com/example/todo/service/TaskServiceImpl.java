@@ -8,15 +8,18 @@ import org.springframework.stereotype.Service;
 
 import com.example.todo.entity.Task;
 import com.example.todo.repository.TaskRepository;
+import com.example.todo.validation.TaskValidator;
 
 @Service
 public class TaskServiceImpl implements TaskService {
     
     private TaskRepository taskRepository;
+    private TaskValidator taskValidator;
 
     @Autowired
-    public TaskServiceImpl(TaskRepository taskRepository){
+    public TaskServiceImpl(TaskRepository taskRepository, TaskValidator taskValidator){
         this.taskRepository = taskRepository;
+        this.taskValidator = taskValidator;
     }
 
     @Override
@@ -31,6 +34,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task saveTask(Task task){
+        taskValidator.validateTask(task);
         return taskRepository.save(task);
     }
 
@@ -38,7 +42,8 @@ public class TaskServiceImpl implements TaskService {
     public Task updateTask(Long id, Task task){
         Task existingTask = taskRepository.findById(id).orElse(null);
 
-        if(task != null ){
+        if(existingTask != null && task != null ){
+            taskValidator.validateTask(task);
             existingTask.setTaskName(task.getTaskName());
             existingTask.setDescription(task.getDescription());
             existingTask.setPriority(task.getPriority());
