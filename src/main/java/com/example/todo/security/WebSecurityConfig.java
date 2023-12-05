@@ -17,6 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.example.todo.security.jwt.AuthEntryPointJwt;
 import com.example.todo.security.jwt.AuthTokenFilter;
+import com.example.todo.service.UserDetailsServiceImpl;
 
 @Configuration
 @EnableMethodSecurity
@@ -48,6 +49,7 @@ public class WebSecurityConfig {
         return authProvider;
     }
 
+    //save password as encrypted
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -58,6 +60,7 @@ public class WebSecurityConfig {
         return authConfig.getAuthenticationManager();
     }
 
+    //
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 
@@ -79,3 +82,5 @@ public class WebSecurityConfig {
 
     
 }
+
+//spring security configuration using all utilities, classes and components
