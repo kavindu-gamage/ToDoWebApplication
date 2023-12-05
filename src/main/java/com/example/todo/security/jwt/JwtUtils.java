@@ -32,6 +32,7 @@ public class JwtUtils {
     private int jwtExpirationMs;
 
     //Generate the token
+    //Authntication is a object and available at the spring security
     public String generateJwtToken(Authentication authentication){
         UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();
 
@@ -54,12 +55,14 @@ public class JwtUtils {
         try{
             Jwts.parserBuilder().setSigningKey(key()).build().parse(authToken);
             return true;
+        //when token changed by user
         }catch(MalformedJwtException e) {
             logger.error("Invalid JWT Token: {}", e.getMessage());
         }catch(ExpiredJwtException e){
             logger.error("JWT Token is Expired : {}" , e.getMessage());
         }catch(UnsupportedJwtException e){
             logger.error("Unsupported JWT :{} ", e.getMessage());
+        //when payload is empty
         }catch(IllegalArgumentException e){
             logger.error("JWT Payload is empty: {}", e.getMessage());
         }
@@ -72,3 +75,7 @@ public class JwtUtils {
         return Jwts.parserBuilder().setSigningKey(key()).build().parseClaimsJws(authToken).getBody().getSubject();
     }
 }
+
+//Token header(token type+algorithm use to sign the token)
+//payload(user detials, issuedtime, exp time)
+//signature

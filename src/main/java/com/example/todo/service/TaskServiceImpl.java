@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.todo.entity.Task;
 import com.example.todo.repository.TaskRepository;
+import com.example.todo.validation.IdValidator;
 import com.example.todo.validation.TaskValidator;
 
 @Service
@@ -15,11 +16,13 @@ public class TaskServiceImpl implements TaskService {
     
     private TaskRepository taskRepository;
     private TaskValidator taskValidator;
+    private IdValidator idValidator;
 
     @Autowired
-    public TaskServiceImpl(TaskRepository taskRepository, TaskValidator taskValidator){
+    public TaskServiceImpl(TaskRepository taskRepository, TaskValidator taskValidator, IdValidator idValidator){
         this.taskRepository = taskRepository;
         this.taskValidator = taskValidator;
+        this.idValidator = idValidator;
     }
 
     @Override
@@ -29,6 +32,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task getTaskById(Long id){
+        idValidator.validateId(id);
         return taskRepository.findById(id).orElseThrow(()-> new NoSuchElementException("Task Not Found"+id));
     }
 
