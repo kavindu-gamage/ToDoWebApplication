@@ -1,4 +1,4 @@
-package com.example.todo.payloads.responses;
+package com.example.todo.dto.responses;
 
 import lombok.Data;
 

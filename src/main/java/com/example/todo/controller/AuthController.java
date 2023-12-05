@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.todo.dto.requests.UserLoginDTO;
+import com.example.todo.dto.responses.MessageResponse;
+import com.example.todo.dto.responses.jwtResponse;
 import com.example.todo.entity.User;
-import com.example.todo.payloads.requests.LoginRequest;
-import com.example.todo.payloads.responses.MessageResponse;
-import com.example.todo.payloads.responses.jwtResponse;
 import com.example.todo.repository.UserRepository;
 import com.example.todo.security.jwt.JwtUtils;
 
@@ -57,7 +57,7 @@ public class AuthController {
     }
 
     @PostMapping("/auth/login")
-    public ResponseEntity<?>  login(@RequestBody LoginRequest request){
+    public ResponseEntity<?>  login(@RequestBody UserLoginDTO request){
 
         Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
