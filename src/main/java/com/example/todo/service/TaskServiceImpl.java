@@ -13,40 +13,40 @@ import com.example.todo.validation.TaskValidator;
 
 @Service
 public class TaskServiceImpl implements TaskService {
-    
+
     private TaskRepository taskRepository;
     private TaskValidator taskValidator;
     private IdValidator idValidator;
 
     @Autowired
-    public TaskServiceImpl(TaskRepository taskRepository, TaskValidator taskValidator, IdValidator idValidator){
+    public TaskServiceImpl(TaskRepository taskRepository, TaskValidator taskValidator, IdValidator idValidator) {
         this.taskRepository = taskRepository;
         this.taskValidator = taskValidator;
         this.idValidator = idValidator;
     }
 
     @Override
-    public List<Task> getAllTasks(){
+    public List<Task> getAllTasks() {
         return taskRepository.findAll();
     }
 
     @Override
-    public Task getTaskById(Long id){
+    public Task getTaskById(Long id) {
         idValidator.validateId(id);
-        return taskRepository.findById(id).orElseThrow(()-> new NoSuchElementException("Task Not Found"+id));
+        return taskRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Task Not Found" + id));
     }
 
     @Override
-    public Task saveTask(Task task){
+    public Task saveTask(Task task) {
         taskValidator.validateTask(task);
         return taskRepository.save(task);
     }
 
     @Override
-    public Task updateTask(Long id, Task task){
+    public Task updateTask(Long id, Task task) {
         Task existingTask = taskRepository.findById(id).orElse(null);
 
-        if(existingTask != null && task != null ){
+        if (existingTask != null && task != null) {
             taskValidator.validateTask(task);
             existingTask.setTaskName(task.getTaskName());
             existingTask.setDescription(task.getDescription());
@@ -54,13 +54,13 @@ public class TaskServiceImpl implements TaskService {
             existingTask.setStatus(task.getStatus());
             existingTask.setDueDate(task.getDueDate());
             return taskRepository.save(existingTask);
-        }else{
+        } else {
             return null;
         }
     }
 
     @Override
-    public void deleteTask(Long id){
+    public void deleteTask(Long id) {
         taskRepository.deleteById(id);
     }
 }

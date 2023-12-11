@@ -10,14 +10,14 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name="users")
+@Table(name = "users")
 public class User {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true ,nullable = false)
+    @Column(unique = true, nullable = false)
     private String username;
 
     @Column(nullable = false)
@@ -28,6 +28,5 @@ public class User {
 
     // @Column(nullable = true)
     // private String profileImage;
-
 
 }

@@ -7,7 +7,7 @@ public class MessageResponse {
     private String message;
     private int errorCode;
 
-    public MessageResponse(int errorCode, String message){
+    public MessageResponse(int errorCode, String message) {
         this.errorCode = errorCode;
         this.message = message;
 

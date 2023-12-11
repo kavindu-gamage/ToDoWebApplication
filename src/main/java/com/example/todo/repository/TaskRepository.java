@@ -7,5 +7,5 @@ import com.example.todo.entity.Task;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
-    
+
 }

@@ -28,19 +28,19 @@ public class WebSecurityConfig {
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
 
-    //for the configuration
+    // for the configuration
     @Bean
-    public UserDetailsService userDetailsService(){
+    public UserDetailsService userDetailsService() {
         return userDetailsService;
     }
 
     @Bean
-    public AuthTokenFilter authenticationJwTokenFilter(){
+    public AuthTokenFilter authenticationJwTokenFilter() {
         return new AuthTokenFilter();
     }
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider(){
+    public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 
         authProvider.setUserDetailsService(userDetailsService);
@@ -49,38 +49,36 @@ public class WebSecurityConfig {
         return authProvider;
     }
 
-    //save password as encrypted
+    // save password as encrypted
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception{
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
 
     //
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.cors().and().csrf(csrf -> csrf.disable())
-        .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
-        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .authorizeHttpRequests(auth ->
-        auth.requestMatchers("/auth/**").permitAll()
-        .requestMatchers("/uploads/**").permitAll()
-        .anyRequest().authenticated()); //"/auth" requests only permits
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/uploads/**").permitAll()
+                        .anyRequest().authenticated()); // "/auth" requests only permits
 
         http.authenticationProvider(authenticationProvider());
 
-        //Call for the filter function,
+        // Call for the filter function,
         http.addFilterBefore(authenticationJwTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
-    
 }
 
-//spring security configuration using all utilities, classes and components
+// spring security configuration using all utilities, classes and components

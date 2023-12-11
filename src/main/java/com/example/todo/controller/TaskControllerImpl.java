@@ -20,6 +20,7 @@ public class TaskControllerImpl implements TasksController {
     public TaskControllerImpl(TaskService taskService) {
         this.taskService = taskService;
     }
+
     @Override
     public ResponseEntity<List<Task>> getAllTasks() {
         return ResponseEntity.status(HttpStatus.OK).body(taskService.getAllTasks());

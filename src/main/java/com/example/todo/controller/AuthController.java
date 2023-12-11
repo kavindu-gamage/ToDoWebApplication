@@ -21,7 +21,7 @@ import com.example.todo.exceptions.UserRegistrationException;
 import com.example.todo.repository.UserRepository;
 import com.example.todo.security.jwt.JwtUtils;
 
-@CrossOrigin(origins="*")
+@CrossOrigin(origins = "*")
 @RestController
 public class AuthController {
 
@@ -45,40 +45,37 @@ public class AuthController {
 
         return newUser;
     }
-    
+
     @PostMapping("/auth/register")
-    public ResponseEntity<?> registerUser(@RequestBody User user){
+    public ResponseEntity<?> registerUser(@RequestBody User user) {
 
         if (userRepository.existsByUsername(user.getUsername())) {
             throw new UserRegistrationException("Username is already taken");
         }
 
-        if(userRepository.existsByEmail(user.getEmail())){
+        if (userRepository.existsByEmail(user.getEmail())) {
             throw new UserRegistrationException("Email already in Use");
         }
 
         User newUser = createUserFromRequest(user);
         userRepository.save(newUser);
 
-        return ResponseEntity.ok(new MessageResponse(HttpStatus.OK.value(),"User Created successfully"));
+        return ResponseEntity.ok(new MessageResponse(HttpStatus.OK.value(), "User Created successfully"));
     }
-
 
     @PostMapping("/auth/login")
-    public ResponseEntity<?>  login(@RequestBody UserLoginDTO request){
+    public ResponseEntity<?> login(@RequestBody UserLoginDTO request) {
 
         Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            String jwt = jwtUtils.generateJwtToken(authentication);
+        String jwt = jwtUtils.generateJwtToken(authentication);
 
-            User user = userRepository.findByUsername(request.getUsername()).orElse(null);
+        User user = userRepository.findByUsername(request.getUsername()).orElse(null);
 
-            return ResponseEntity.ok(new jwtResponse(jwt, user.getId(), user.getUsername(), user.getEmail()));
+        return ResponseEntity.ok(new jwtResponse(jwt, user.getId(), user.getUsername(), user.getEmail()));
     }
-
-
 
 }

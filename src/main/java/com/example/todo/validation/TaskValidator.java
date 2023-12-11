@@ -5,6 +5,7 @@ import java.util.Objects;
 import org.springframework.stereotype.Component;
 
 import com.example.todo.entity.Task;
+
 @Component
 public class TaskValidator {
     public void validateTask(Task task) {
@@ -28,5 +29,4 @@ public class TaskValidator {
         }
     }
 
-    
 }

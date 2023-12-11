@@ -9,7 +9,7 @@ public class jwtResponse {
     private String username;
     private String email;
 
-    public jwtResponse(String token,Long id, String username , String email){
+    public jwtResponse(String token, Long id, String username, String email) {
         this.token = token;
         this.id = id;
         this.username = username;
