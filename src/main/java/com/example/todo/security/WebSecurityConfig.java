@@ -8,6 +8,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,6 +22,7 @@ import com.example.todo.service.UserDetailsServiceImpl;
 
 @Configuration
 @EnableMethodSecurity
+@EnableWebSecurity
 public class WebSecurityConfig {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
@@ -69,6 +71,13 @@ public class WebSecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/uploads/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/configuration/**", "/swagger-resources/**",
+                                "/v2/api-docs",
+                                "/webjars/**", "/api/v1/auth/**", "/v2/api-docs", "/v3/api/docs", "/v3/api/docs/**",
+                                "/swagger-resources", "/swagger-ui.html", "/configuration/ui",
+                                "/configuration/security", "/login#/", "/swagger-ui.html")
+                        .permitAll()
+
                         .anyRequest().authenticated()); // "/auth" requests only permits
 
         http.authenticationProvider(authenticationProvider());

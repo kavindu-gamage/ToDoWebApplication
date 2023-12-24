@@ -23,6 +23,7 @@ import com.example.todo.security.jwt.JwtUtils;
 
 @CrossOrigin(origins = "*")
 @RestController
+
 public class AuthController {
 
     @Autowired
