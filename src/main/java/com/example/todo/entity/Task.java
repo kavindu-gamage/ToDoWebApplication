@@ -8,11 +8,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "tasks")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,4 +36,14 @@ public class Task {
 
     @Column(nullable = false)
     private LocalDate dueDate;
+
+    public Task(Long id, String taskName, String description, String priority, String status, String dueDate) {
+        this.id = id;
+        this.taskName = taskName;
+        this.description = description;
+        this.priority = priority;
+        this.status = status;
+        this.dueDate = LocalDate.parse(dueDate); // Parse String to LocalDate
+    }
+
 }
